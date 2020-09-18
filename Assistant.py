@@ -5,6 +5,7 @@ import wikipedia  # pip install
 import webbrowser
 import os
 import smtplib
+import time
 
 # if using python>3.8 then pyaudio won't work use this
 # pip install pipwin
@@ -34,7 +35,6 @@ def giveHelp():
     speak("I can search on google, stackoverflow, open youtube, open This PC")
 
 def changevoice(typ):
-    if 'change voice' in query:
     if typ == 0:
         typ = 1
     else:
@@ -61,17 +61,20 @@ def takeCommand():
         print("Say that again please..")
         print("None")
     return query
-
+count = 0
 
 if __name__ == "__main__":
 
     wishMe()
-    speak("If you want I can change my voice type, to change say change voice")
-    query = takeCommand().lower()
+    
 
-    speak("To know what can I do say help else,")
+    speak("To know what can I do say help)
     while True:
-        speak("Give command or say quit")
+        if count > 0:
+            speak("If you want I can change my voice type, to change say change voice")
+            count = 0
+        time.sleep(1)
+        speak("else, give command or say quit")
         try:
             query = takeCommand().lower()
         except:
@@ -118,3 +121,5 @@ if __name__ == "__main__":
 
         elif 'change voice' in query:
             changevoice(typ)
+            count += 1
+        time.sleep(2)
