@@ -6,6 +6,7 @@ import webbrowser
 import os
 import smtplib
 import time
+import subprocess
 
 # if using python>3.8 then pyaudio won't work use this
 # pip install pipwin
@@ -13,14 +14,15 @@ import time
 typ = 0
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
+engine.setProperty('voice', voices[0].id)
 
 
 def speak(audio):
-    engine.say(audio)
-    engine.runAndWait()
+	time.sleep(1)
+	engine.say(audio)
+	engine.runAndWait()
 
-
+asstntname ="Max"
 def wishMe():
     hour = int(datetime.datetime.now().hour)
     if hour >= 0 and hour < 12:
@@ -29,6 +31,7 @@ def wishMe():
         speak("Good Afternoon!")
     else:
         speak("Good Evening!")
+    speak(f"I am {asstntname}")
 
 
 def giveHelp():
@@ -60,6 +63,7 @@ def takeCommand():
         print(e)
         print("Say that again please..")
         print("None")
+        query = takeCommand()
     return query
 count = 0
 
@@ -68,13 +72,13 @@ if __name__ == "__main__":
     wishMe()
     
 
-    speak("To know what can I do say help)
+    speak("To know what can I do say help else,")
     while True:
         if count > 0:
             speak("If you want I can change my voice type, to change say change voice")
             count = 0
         time.sleep(1)
-        speak("else, give command or say quit")
+        speak("Give command or say quit")
         try:
             query = takeCommand().lower()
         except:
@@ -103,7 +107,11 @@ if __name__ == "__main__":
             music_dir =input()
             songs = os.listdir(music_dir)
             print(songs)
-            os.startfile(os.path.join(music_dir, songs[0]))  # random bana na hai
+            os.startfile(os.path.join(music_dir, songs[0]))
+
+        elif 'How are you' in query:
+        	speak("I am fine")
+        	speak("How are you")
 
         elif 'the time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
@@ -112,7 +120,15 @@ if __name__ == "__main__":
         elif 'help' in query:
             giveHelp()
 
-        elif ' quit ' in query:
+        elif 'shutdown system' in query: 
+            speak("Hold On a Sec ! Your system is on its way to shut down") 
+            subprocess.call('shutdown / p /f') 
+
+        elif 'change name' in query:
+        	speak("What would you like to call me")
+        	usrname = takeCommand()
+
+        elif 'quit' in query:
             exit()
 
         elif 'open my pc' in query:
